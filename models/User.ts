@@ -15,4 +15,4 @@ const UserSchema: Schema = new Schema({
   email: { type: String, required: true }
 });
 
-export default mongoose.model<IUser>("ChatMessage", UserSchema);
+export default mongoose.model<IUser>("User", UserSchema);

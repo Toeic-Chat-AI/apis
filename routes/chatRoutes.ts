@@ -1,8 +1,9 @@
 import { Router } from "express";
 import { getMessages, sendMessage } from "../controllers/chatController";
-const router = Router();
 
-router.get("/messages", getMessages);
-router.post("/messages", sendMessage);
+const messagesRouter = Router();
 
-export default router;
+messagesRouter.get("/messages", getMessages);
+messagesRouter.post("/messages", sendMessage);
+
+export default messagesRouter;
