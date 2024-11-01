@@ -8,13 +8,20 @@ import envConfig from "./config/dotenv";
 const app = express();
 const PORT = envConfig.PORT;
 
-// CORS configuration
-const corsOptions = {
-  origin: ["http://localhost:3000"],
-  optionsSuccessStatus: 200
-};
+const allowedOrigins = ["http://localhost:3000", envConfig.FRONTEND_URL];
 
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true // Allow cookies if you’re using them
+  })
+);
 app.use(bodyParser.json());
 
 mongoose
