@@ -4,9 +4,9 @@ import cors from "cors";
 import mongoose from "mongoose";
 import routes from "./routes/route";
 import envConfig from "./config/dotenv";
+import serverless from "serverless-http";
 
 const app = express();
-const PORT = envConfig.PORT;
 
 app.use(
   cors({
@@ -15,6 +15,7 @@ app.use(
 );
 app.use(bodyParser.json());
 
+// Connect to MongoDB
 mongoose
   .connect(`${envConfig.MONGO_URI}/toeic-chat-ai`, {})
   .then(() => {
@@ -24,8 +25,8 @@ mongoose
     console.error("Error connecting to MongoDB:", error);
   });
 
+// Set up API routes
 app.use("/api", routes);
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// Export the app as a serverless function
+module.exports.handler = serverless(app);
