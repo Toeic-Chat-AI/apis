@@ -5,5 +5,5 @@ export const handleGetMessages = async (req, res, chatId) => {
     chatHistoryId: chatId
   });
   const messages = chatHistoryMessages.map((message) => message.message);
-  console.log(messages);
+  return messages;
 };

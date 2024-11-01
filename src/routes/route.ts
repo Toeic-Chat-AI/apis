@@ -6,6 +6,7 @@ import { consoleMiddlewares } from "../middlewares/consoleMiddlewares";
 import authRouter from "./authRoutes";
 import messagesRouter from "./chatRoutes";
 import chatHistoryRouter from "./chatHistoryRoutes";
+import userRouter from "./userRoutes";
 
 const routes = Router();
 
@@ -20,5 +21,6 @@ routes.use(authMiddleware);
 
 routes.use(messagesRouter);
 routes.use(chatHistoryRouter);
+routes.use(userRouter);
 
 export default routes;
