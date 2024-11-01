@@ -1,21 +1,30 @@
 import ChatHistory from "../models/ChatHistory";
-import ChatMessage, { IChatMessage } from "../models/ChatMessage";
+import ChatMessage from "../models/ChatMessage";
+import mongoose from "mongoose";
 
-export const handleCreateMessages = async (
-  messagePayload,
-  user,
-  isNewChat = false
-) => {
-  const newMessage = new ChatMessage({
-    ...messagePayload,
-    userId: user._id
-  });
+export const handleCreateMessages = async (messagePayload, user) => {
+  const isNewChat = !messagePayload.chatHistoryId;
+  let chatHistoryId;
+
   if (isNewChat) {
     const chatHistory = new ChatHistory({
-      userId: user._id,
-      title: messagePayload.title,
-      messages: [messagePayload]
+      userId: user.id,
+      title: messagePayload.message.text
     });
-    chatHistory.save();
+    await chatHistory.save();
+    chatHistoryId = chatHistory._id;
+  } else {
+    chatHistoryId = new mongoose.Types.ObjectId(messagePayload.chatHistoryId);
   }
+
+  const newMessage = new ChatMessage({
+    message: messagePayload.message,
+    userId: new mongoose.Types.ObjectId(user.id),
+    createdAt: new Date(),
+    chatHistoryId: chatHistoryId
+  });
+
+  await newMessage.save();
+
+  return newMessage;
 };

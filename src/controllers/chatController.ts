@@ -1,30 +1,26 @@
 import { Request, Response } from "express";
-import ChatMessage from "../models/ChatMessage";
 import { handleCreateMessages } from "../services/handleCreateMessages";
+import { handleGetMessages } from "../services/handleGetMessages";
 
 export const getMessagesByChatHistory = async (req: Request, res: Response) => {
   const { id } = req.params;
-  console.log(req);
   try {
-    const messages = await ChatMessage.find({ chatHistoryId: id }).sort({
-      createdAt: 1
-    });
+    const messages = await handleGetMessages(req.body, req.user, id);
     res.json(messages);
   } catch (err) {
-    res.status(500).send(err);
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", error: err.message });
   }
 };
 
 export const sendMessage = async (req: Request, res: Response) => {
   try {
-    const isNewChat = req.params.isNewChatHistory;
-    const newMessage = await handleCreateMessages(
-      req.body,
-      req.user,
-      isNewChat
-    );
+    const newMessage = await handleCreateMessages(req.body, req.user);
     res.status(201).json(newMessage);
   } catch (err) {
-    res.status(500).send(err);
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", error: err.message });
   }
 };

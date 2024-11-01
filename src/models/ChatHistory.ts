@@ -1,18 +1,17 @@
 import mongoose, { Document, Schema } from "mongoose";
-import { ChatMessageSchema, IChatMessage } from "./ChatMessage";
 
 export interface IChatHistory extends Document {
   userId: string;
-  messages: IChatMessage[];
+  messageIds: string[];
   title: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
 const ChatHistorySchema: Schema = new Schema({
-  userId: { type: String, required: true },
+  _id: { type: Schema.Types.ObjectId, auto: true },
+  userId: { type: Schema.Types.ObjectId, required: true },
   title: { type: String, required: true },
-  messages: { type: [ChatMessageSchema], required: true },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });
