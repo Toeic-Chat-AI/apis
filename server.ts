@@ -18,8 +18,7 @@ app.use(
       } else {
         callback(new Error("Not allowed by CORS"));
       }
-    },
-    credentials: true // Allow cookies if you’re using them
+    }
   })
 );
 app.use(bodyParser.json());
