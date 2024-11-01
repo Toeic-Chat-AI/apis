@@ -2,14 +2,17 @@ import mongoose, { Document, Schema } from "mongoose";
 
 export interface IChatMessage extends Document {
   message: string;
-  sender: string;
+  userId: string;
   createdAt: Date;
 }
 
-const ChatMessageSchema: Schema = new Schema({
+export const ChatMessageSchema: Schema = new Schema({
   _id: { type: Schema.Types.ObjectId, auto: true },
   message: { type: String, required: true },
-  sender: { type: String, required: true },
+  userId: { type: String, required: true },
+  chatHistoryId: { type: Schema.Types.ObjectId, required: true },
+  position: { type: Number, required: true },
+  type: { type: String, required: true },
   createdAt: { type: Date, default: Date.now }
 });
 

@@ -8,7 +8,13 @@ import envConfig from "./config/dotenv";
 const app = express();
 const PORT = envConfig.PORT;
 
-app.use(cors());
+// CORS configuration
+const corsOptions = {
+  origin: ["http://localhost:3000"],
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 mongoose
