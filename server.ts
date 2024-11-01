@@ -8,19 +8,11 @@ import envConfig from "./config/dotenv";
 const app = express();
 const PORT = envConfig.PORT;
 
-// const allowedOrigins = ["http://localhost:3000", envConfig.FRONTEND_URL];
-
-// app.use(
-//   cors({
-//     origin: function (origin, callback) {
-//       if (!origin || allowedOrigins.includes(origin)) {
-//         callback(null, true);
-//       } else {
-//         callback(new Error("Not allowed by CORS"));
-//       }
-//     }
-//   })
-// );
+app.use(
+  cors({
+    origin: "http://localhost:3000"
+  })
+);
 app.use(bodyParser.json());
 
 mongoose
