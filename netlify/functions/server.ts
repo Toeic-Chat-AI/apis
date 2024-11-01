@@ -2,9 +2,9 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import mongoose from "mongoose";
-import routes from "./src/routes/route";
-import envConfig from "./src/config/dotenv";
 import serverless from "serverless-http";
+import envConfig from "../../src/config/dotenv";
+import routes from "../../src/routes/route";
 
 const app = express();
 
