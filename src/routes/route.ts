@@ -1,4 +1,3 @@
-
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/authMiddlewares";
 import { consoleMiddlewares } from "../middlewares/consoleMiddlewares";
@@ -7,6 +6,7 @@ import authRouter from "./authRoutes";
 import messagesRouter from "./chatRoutes";
 import chatHistoryRouter from "./chatHistoryRoutes";
 import userRouter from "./userRoutes";
+import fileRouter from "./fileRoutes";
 
 const routes = Router();
 
@@ -20,6 +20,7 @@ routes.use(authRouter);
 routes.use(authMiddleware);
 
 routes.use(messagesRouter);
+routes.use(fileRouter);
 routes.use(chatHistoryRouter);
 routes.use(userRouter);
 
