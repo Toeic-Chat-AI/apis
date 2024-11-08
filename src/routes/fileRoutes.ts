@@ -1,16 +1,18 @@
 import { Router } from "express";
-import {
-  getFileByMessageHistory,
-  uploadFileByMessageHistory,
-  uploadManyFilesByMessageHistory
-} from "../controllers/fileController";
-import { multerUpload } from "../middlewares/multerMiddlewares";
+import { uploadFileByMessageHistory } from "../controllers/fileController";
+import uploadMulter from "../config/cloudinaryStorage";
 
 const fileRouter = Router();
 
-fileRouter.get("/file", getFileByMessageHistory);
-
-fileRouter.post("/file", multerUpload, uploadFileByMessageHistory);
-fileRouter.post("/many-files", multerUpload, uploadManyFilesByMessageHistory);
+fileRouter.post(
+  "/files",
+  uploadMulter.array("files", 10),
+  uploadFileByMessageHistory
+);
+fileRouter.post(
+  "/files/:chatHistoryId",
+  uploadMulter.array("files", 10),
+  uploadFileByMessageHistory
+);
 
 export default fileRouter;

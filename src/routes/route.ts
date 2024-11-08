@@ -20,7 +20,7 @@ routes.use(authRouter);
 routes.use(authMiddleware);
 
 routes.use(messagesRouter);
-// routes.use(fileRouter);
+routes.use(fileRouter);
 routes.use(chatHistoryRouter);
 routes.use(userRouter);
 

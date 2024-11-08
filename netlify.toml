@@ -10,3 +10,9 @@
   from = "/api/*"
   to = "/.netlify/functions/server/api/:splat"
   status = 200
+
+[[plugins]]
+  package = "netlify-plugin-cloudinary"
+
+  [plugins.inputs]
+  cloudName = "dvirsdhqn"

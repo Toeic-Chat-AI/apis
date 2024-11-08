@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getFile, uploadFile, uploadManyFiles } from "../services/handleFiles";
+import { getFile, uploadFile } from "../services/handleFiles";
 
 export const getFileByMessageHistory = async (req: Request, res: Response) => {
   try {
@@ -12,31 +12,20 @@ export const getFileByMessageHistory = async (req: Request, res: Response) => {
   }
 };
 
-export const uploadFileByMessageHistory = async (
-  req: Request,
-  res: Response
-) => {
+export const uploadFileByMessageHistory = async (req: any, res: Response) => {
   try {
-    console.log(req.body);
-    const newMessage = await uploadFile(req.body, req.user);
-    res.status(201).json(newMessage);
+    const files = req.files;
+    const chatHistoryId = req.params.chatHistoryId;
+    const { uploadedData, chatId } = await uploadFile(
+      files,
+      chatHistoryId,
+      req.user
+    );
+    res.status(200).json({ uploadedData, chatId });
   } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Internal Server Error", error: err.message });
-  }
-};
-
-export const uploadManyFilesByMessageHistory = async (
-  req: Request,
-  res: Response
-) => {
-  try {
-    const newMessage = await uploadManyFiles(req.body, req.user);
-    res.status(201).json(newMessage);
-  } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Internal Server Error", error: err.message });
+    res.status(err.http_code || 500).json({
+      message: err.message || "Internal Server Error",
+      error: err.message
+    });
   }
 };

@@ -1,24 +1,36 @@
-import cloudinary from "../config/cloudinary";
+import { generateSignedUrl } from "../config/cloudinary";
+import { Response } from "express";
+import File from "../models/File";
+import ChatHistory from "../models/ChatHistory";
 
 export const getFile = async (req: Request, res: Response) => {
   return;
 };
 
-export const uploadFile = async (req, res) => {
-  await cloudinary.uploader.upload(
-    req.file.path,
-    (error, result) => {
-      if (error) {
-        return res.status(500).json({
-          message: "Internal Server Error",
-          error: error.message
-        });
-      }
-      return result;
-    }
-  );
-};
-
-export const uploadManyFiles = async (req: Request, res: Response) => {
-  return;
+export const uploadFile = async (files, chatHistoryId, user) => {
+  let chatId = chatHistoryId;
+  if (!chatHistoryId) {
+    const chatHistory = new ChatHistory({
+      userId: user.id,
+      title: files[0].originalname
+    });
+    await chatHistory.save();
+    chatId = chatHistory._id;
+    //create a new chat history
+  }
+  const uploadedData = [];
+  files.forEach(async (file) => {
+    const signUrl = generateSignedUrl(
+      file.filename,
+      file.mimetype.split("/")[1]
+    );
+    const newFile = await File.create({
+      fileName: file.originalname,
+      fileType: file.mimetype,
+      filePath: signUrl,
+      ChatHistoryId: chatId
+    });
+    uploadedData.push({ ...newFile, path: signUrl });
+  });
+  return { uploadedData, chatId };
 };
