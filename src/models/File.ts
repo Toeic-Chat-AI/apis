@@ -1,10 +1,10 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 export interface IFile extends Document {
-  username: string;
-  password: string;
-  fullName: string;
-  email: string;
+  fileName: string;
+  fileType: string;
+  filePath: string;
+  chatHistoryId: Schema.Types.ObjectId;
 }
 
 const FileSchema: Schema = new Schema({
@@ -12,10 +12,10 @@ const FileSchema: Schema = new Schema({
   fileName: { type: String, required: true },
   fileType: { type: String, required: true },
   filePath: { type: String, required: true },
-  ChatHistoryId: {
+  chatHistoryId: {
     type: Schema.Types.ObjectId,
     required: true
   }
 });
 
-export default mongoose.model<IFile>("File", FileSchema);
+export default mongoose.model<IFile>("files", FileSchema);

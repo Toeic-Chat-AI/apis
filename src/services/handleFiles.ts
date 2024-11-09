@@ -1,11 +1,7 @@
 import { generateSignedUrl } from "../config/cloudinary";
-import { Response } from "express";
 import File from "../models/File";
 import ChatHistory from "../models/ChatHistory";
-
-export const getFile = async (req: Request, res: Response) => {
-  return;
-};
+import mongoose from "mongoose";
 
 export const uploadFile = async (files, chatHistoryId, user) => {
   let chatId = chatHistoryId;
@@ -19,20 +15,24 @@ export const uploadFile = async (files, chatHistoryId, user) => {
     //create a new chat history
   }
   const uploadedData = [];
-  files.forEach(async (file) => {
+  const uploadPromises = files.map(async (file) => {
     const signUrl = await generateSignedUrl(
       file.filename,
       file.mimetype.split("/")[1]
     );
-    
-    const newFile = await File.create({
-      fileName: file.originalname,
-      fileType: file.mimetype,
-      filePath: signUrl,
-      ChatHistoryId: chatId
-    });
-    console.log(newFile);
+
+    const newFile = (
+      await File.create({
+        fileName: file.originalname,
+        fileType: file.mimetype,
+        filePath: signUrl,
+        chatHistoryId: new mongoose.Types.ObjectId(chatId)
+      })
+    ).toObject();
+
     uploadedData.push({ ...newFile, path: signUrl });
   });
+
+  await Promise.all(uploadPromises);
   return { uploadedData, chatId };
 };

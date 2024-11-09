@@ -4,14 +4,10 @@ import uploadMulter from "../config/cloudinaryStorage";
 
 const fileRouter = Router();
 
-fileRouter.post(
-  "/files",
-  uploadMulter.array("files", 10),
-  uploadFileByMessageHistory
-);
+fileRouter.post("/files", uploadMulter, uploadFileByMessageHistory);
 fileRouter.post(
   "/files/:chatHistoryId",
-  uploadMulter.array("files", 10),
+  uploadMulter,
   uploadFileByMessageHistory
 );
 

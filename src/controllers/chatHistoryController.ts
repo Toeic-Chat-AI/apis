@@ -8,7 +8,7 @@ import {
 export const getChatHistoryByUser = async (req: Request, res: Response) => {
   try {
     const messages = await handleGetChatHistory(req.user);
-    res.json(messages);
+    res.status(200).json(messages);
   } catch (err) {
     res
       .status(500)

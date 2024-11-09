@@ -29,7 +29,7 @@ mongoose
     console.error("Error connecting to MongoDB:", error);
   });
 
-// Set up API routes
+// Set up API routes  
 app.use("/api", routes);
 
 // Export the app as a serverless function

@@ -5,8 +5,8 @@ import { handleGetMessages } from "../services/handleGetMessages";
 export const getMessagesByChatHistory = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    const messages = await handleGetMessages(req.body, req.user, id);
-    res.json(messages);
+    const response = await handleGetMessages(req.body, req.user, id);
+    res.status(200).json(response);
   } catch (err) {
     res
       .status(500)

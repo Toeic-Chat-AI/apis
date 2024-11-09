@@ -1,12 +1,13 @@
 import ChatHistory, { IChatHistory } from "../models/ChatHistory";
 import mongoose from "mongoose";
 import ChatMessage from "../models/ChatMessage";
+import File from "../models/File";
 
 export const handleGetChatHistory = async (user) => {
   const chatHistory = await ChatHistory.find({
     userId: new mongoose.Types.ObjectId(user.id)
   });
-  return chatHistory;
+  return { chatHistory };
 };
 
 export const handleUpdateChatHistory = async (
@@ -26,6 +27,9 @@ export const handleDeleteChatHistory = async (chatId) => {
     _id: new mongoose.Types.ObjectId(chatId)
   });
   await ChatMessage.deleteMany({
+    chatHistoryId: new mongoose.Types.ObjectId(chatId)
+  });
+  await File.deleteMany({
     chatHistoryId: new mongoose.Types.ObjectId(chatId)
   });
 };
