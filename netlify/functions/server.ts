@@ -10,9 +10,7 @@ const app = express();
 
 app.use(
   cors({
-    cors({
-      origin: true // Allow requests from all origins
-    })
+    origin: true // Allow requests from all origins
   })
 );
 app.use(bodyParser.json());
@@ -27,7 +25,7 @@ mongoose
     console.error("Error connecting to MongoDB:", error);
   });
 
-// Set up API routes  
+// Set up API routes
 app.use("/api", routes);
 
 // Export the app as a serverless function
