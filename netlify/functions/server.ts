@@ -10,7 +10,11 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:3000"
+    origin: [
+      envConfig.FRONTEND_URL as string,
+      envConfig.DEPLOY_URL as string,
+      "https://toeic-chat-ai.netlify.app"
+    ]
   })
 );
 app.use(bodyParser.json());
