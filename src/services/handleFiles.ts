@@ -10,7 +10,7 @@ export const getFile = async (req: Request, res: Response) => {
 export const uploadFile = async (files, chatHistoryId, user) => {
   let chatId = chatHistoryId;
   if (!chatHistoryId) {
-    const chatHistory = new ChatHistory({
+    const chatHistory = await new ChatHistory({
       userId: user.id,
       title: files[0].originalname
     });
@@ -20,16 +20,18 @@ export const uploadFile = async (files, chatHistoryId, user) => {
   }
   const uploadedData = [];
   files.forEach(async (file) => {
-    const signUrl = generateSignedUrl(
+    const signUrl = await generateSignedUrl(
       file.filename,
       file.mimetype.split("/")[1]
     );
+    
     const newFile = await File.create({
       fileName: file.originalname,
       fileType: file.mimetype,
       filePath: signUrl,
       ChatHistoryId: chatId
     });
+    console.log(newFile);
     uploadedData.push({ ...newFile, path: signUrl });
   });
   return { uploadedData, chatId };

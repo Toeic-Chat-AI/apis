@@ -21,6 +21,7 @@ export const uploadFileByMessageHistory = async (req: any, res: Response) => {
       chatHistoryId,
       req.user
     );
+    console.log(uploadedData, "heheeh");
     res.status(200).json({ uploadedData, chatId });
   } catch (err) {
     res.status(err.http_code || 500).json({
